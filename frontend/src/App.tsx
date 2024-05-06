@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { createRoom, joinRoomById, startStream } from "./firebase/controler";
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
 	const handleCreateRoom = async () => {
 		try {
 			setIsLoading(true);
+			startWebCam();
 			const id = await createRoom();
 			setRoomId(id);
 			setIsLoading(false);
@@ -37,6 +38,7 @@ function App() {
 		e.preventDefault();
 		try {
 			if (roomId) {
+				startWebCam();
 				setIsLoading(true);
 				await joinRoomById(roomId);
 				setIsLoading(false);
@@ -46,10 +48,6 @@ function App() {
 			//TODO: HANDLE ERROR
 		}
 	};
-
-	useEffect(() => {
-		startWebCam();
-	}, []);
 
 	return (
 		<>
