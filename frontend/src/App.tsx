@@ -1,5 +1,6 @@
 import { FormEvent, useRef, useState } from "react";
 import { createRoom, joinRoomById, startStream } from "./firebase/controler";
+import { Button } from "@mui/material";
 
 function App() {
 	const localStreamRef = useRef<HTMLVideoElement | null>(null);
@@ -81,7 +82,7 @@ function App() {
 							className="bg-red-300"
 							placeholder="add your key"
 						/>
-						<button>{isLoading ? "Joining..." : "Join"}</button>
+						<Button variant="contained">{isLoading ? "Joining..." : "Join"}</Button>
 					</form>
 				</div>
 			</div>
