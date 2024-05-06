@@ -65,7 +65,11 @@ export const createRoom = async () => {
 		type: offerDescription.type,
 	};
 
-	await setDoc(roomDoc, { offer });
+	try {
+		await setDoc(roomDoc, { offer });
+	} catch (e) {
+		console.log("error on setdoc", e);
+	}
 
 	// Listen for remote answer
 	onSnapshot(roomDoc, (snapshot) => {
@@ -79,6 +83,7 @@ export const createRoom = async () => {
 
 	// Listen for remote ICE candidates
 	onSnapshot(answerCandidates, (snapshot) => {
+		console.log("lisiging to changes on call answer ");
 		snapshot.docChanges().forEach((change) => {
 			if (change.type === "added") {
 				const candidate = new RTCIceCandidate(change.doc.data());
@@ -88,7 +93,7 @@ export const createRoom = async () => {
 		});
 	});
 
-	return roomDoc.id 
+	return roomDoc.id;
 };
 
 export const joinRoomById = async (callId: string) => {
@@ -115,11 +120,17 @@ export const joinRoomById = async (callId: string) => {
 			sdp: answerDescription.sdp,
 		};
 
-		await updateDoc(roomDoc, { answer });
+		try {
+			await updateDoc(roomDoc, { answer });
+		} catch (e) {
+			console.log("error white updating doc", e);
+		}
 
 		// Listen to offer candidates
 		onSnapshot(offerCandidates, (snapshot) => {
+			console.log("lisiging to changes on call answer ");
 			snapshot.docChanges().forEach((change) => {
+				console.log("lisiging to changes on call answer 2");
 				if (change.type === "added") {
 					const data = change.doc.data();
 					pc.addIceCandidate(new RTCIceCandidate(data));

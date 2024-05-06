@@ -19,7 +19,7 @@ function App() {
 	const handleCreateRoom = async () => {
 		try {
 			setIsLoading(true);
-			startWebCam();
+			await startWebCam();
 			const id = await createRoom();
 			setRoomId(id);
 			setIsLoading(false);
@@ -33,8 +33,8 @@ function App() {
 		e.preventDefault();
 		try {
 			if (roomId) {
-				startWebCam();
 				setIsLoading(true);
+				await startWebCam();
 				await joinRoomById(roomId);
 				setIsLoading(false);
 			}
