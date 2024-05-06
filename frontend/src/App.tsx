@@ -2,20 +2,15 @@ import { FormEvent, useRef, useState } from "react";
 import { createRoom, joinRoomById, startStream } from "./firebase/controler";
 
 function App() {
-	const localStreamRef = useRef(null);
-	const remoteStreamRef = useRef(null);
+	const localStreamRef = useRef<HTMLVideoElement | null>(null);
+	const remoteStreamRef = useRef<HTMLVideoElement | null>(null);
 	const [roomId, setRoomId] = useState<null | string>(null);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const startWebCam = async () => {
 		const { localStream, remoteStream } = await startStream();
 
-		if (
-			localStream &&
-			remoteStream &&
-			localStreamRef.current &&
-			remoteStreamRef.current
-		) {
+		if (localStreamRef.current && remoteStreamRef.current) {
 			localStreamRef.current.srcObject = localStream;
 			remoteStreamRef.current.srcObject = remoteStream;
 		}
